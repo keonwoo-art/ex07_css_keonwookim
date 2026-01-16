@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import styled  from "styled-components";
+import styled from "styled-components";
 import StyledInput from "./common/StyleInput";
 import StyledForm from "./common/StyleForm"
 import StyledButton from "./common/StyleButton";
@@ -30,21 +29,21 @@ const LoginBox=styled.div`
 
 `;
 
-const LoginCom = ({username, password, onSubmit, onChange}) => {
-    return( 
-    <AuthBlock>
+function RegCom({onSubmit, onChange, username, password}){
+    return(<>
+   <AuthBlock>
         <LoginBox>
             <div className="logo-area">
-                <Link to ="/">탱이냥 이동</Link>
+                회원가입
             </div>
             <StyledForm onSubmit={onSubmit}>
-                <StyledInput placeholder = "input username" type="text" value={username} name="id" onChange={onChange} />
+                <StyledInput placeholder = "username" type="text" value={username} name="id" onChange={onChange} />
                 <StyledInput placeholder = "password" type="text" value={password} name="password" onChange={onChange} />
-                <StyledButton width="100%" $background={["178,235,244",0.5]}>로그인</StyledButton>
+                <StyledButton width="100%" $background={["178,235,244",0.5]}>REGISTER</StyledButton>
             </StyledForm>
         </LoginBox>
     </AuthBlock>
-    )
+    </>)
 }
 
-export default LoginCom;
+export default RegCom;

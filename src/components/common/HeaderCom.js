@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { logout } from "../../redux/authSlice";
 const WrapBlock = styled.div`
     position : fixed; width : 100%;
     z-index : 1;
@@ -29,6 +31,13 @@ const StyleNav = styled.nav`
 `;
 
 const HeaderCom = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const {isLoggedIn, username} = useSelector(state=>state.auth);
+    const onLogout = () => {dispatch(logout());
+        navigate("/")
+    }
+
     return( <>
         <WrapBlock>
             <StyleHeader>
@@ -39,10 +48,19 @@ const HeaderCom = () => {
                     <ul className="menu">
                         <li><Link to="">사료</Link></li>
                         <li><Link to="">간식</Link></li>
+                        <li><Link to="/list">LIST</Link> </li>
                     </ul>
                     <ul>
+                        {isLoggedIn ? (<>
+                            <span>{username} </span> &nbsp; 
+                            <button onClick={onLogout}>로그아웃 </button>
+                        </>) : 
+                        <>
                         <li><Link to="/login">로그인</Link></li>
-                        <li><Link to="">회원가입</Link></li>
+                        <li><Link to="/register">회원가입</Link></li>
+                        </> 
+                        }
+                
                     </ul>
                 </StyleNav>
             </StyleHeader>
