@@ -26,25 +26,41 @@ const DeleteBtn = styled.button`
     &:hover { background: #ff3333; }
 `;
 
-function DetailCom({member, loading, error, onBack, onDelete} ){
+const UpdateBtn = styled.button`
+    padding: 10px 20px; cursor: pointer;
+    background: #4caf50; color: white; border: none;
+    margin-left: 10px;
+    &:hover { background: #45a049; }
+`;
+
+
+function DetailCom({member, loading, error, onBack, onDelete, editData, onChange, onUpdate} ){
     if (loading) return <h2 style={{ textAlign: "center", marginTop: "150px" }}>로딩 중...</h2>;
     if (error) return <h2 style={{ textAlign: "center", marginTop: "150px", color: "red" }}>{error}</h2>;
 
     return (
         <DetailWrapper>
-            <h1>사용자 상세 프로필</h1>
-            {member ? (
+           <h1>회원 정보 수정</h1>
+            {member && editData ? (
                 <>
                     <InfoBox>
-                        <p><strong>username:</strong> {member.id}</p>
-                        <p><strong>password</strong> {member.password}</p>
-                        <p><strong>ROLE</strong> {member.role}</p>
+                        <p><strong>아이디:</strong> {member.id} (수정 불가)</p>
+                        <p><strong>비밀번호:</strong> 
+                            <input name="password" value={editData.password || ""} onChange={onChange} />
+                        </p>
+                        <p><strong>권한:</strong> 
+                            <select name="role" value={editData.role} onChange={onChange}>
+                                <option value="USER">USER</option>
+                                <option value="ADMIN">ADMIN</option>
+                            </select>
+                        </p>
                     </InfoBox>
                     <BackBtn onClick={onBack}>목록으로 돌아가기</BackBtn>
+                    <UpdateBtn onClick={onUpdate}>수정 완료</UpdateBtn>
                     <DeleteBtn onClick={onDelete}>회원삭제</DeleteBtn>
                 </>
             ) : (
-                <p>사용자 정보를 찾을 수 없습니다.</p>
+                <p>로딩 중..</p>
             )}
         </DetailWrapper>
     );

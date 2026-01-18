@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { createLoadingReducers } from "./commonLoadingHandlers"
-import { deleteMemberThunk, getAllMembersThunk, getMemberDetailThunk } from "../service/authThunk"
+import { deleteMemberThunk, getAllMembersThunk, getMemberDetailThunk, updateMemberThunk } from "../service/authThunk"
 
 const initialState = {
     members : [],
@@ -36,8 +36,14 @@ const memberDataSlice = createSlice({
             state.members = state.members.filter(m => m.id !== action.payload);
             state.member = null;
     });
-}
-});
+        builder.addCase(updateMemberThunk.fulfilled, (state, action) => {
+            state.loading = false;
+            state.member = action.payload;
+            state.members = state.members.map(m=>
+                m.id === action.payload.id ? action.payload : m
+            )
+        })
+} });
 
 export default memberDataSlice;
 

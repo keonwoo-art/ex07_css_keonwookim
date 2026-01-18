@@ -1,8 +1,8 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import DetailCom from "../components/DetailCom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMemberThunk, getMemberDetailThunk } from "../service/authThunk";
-import { useEffect } from "react";
+import { deleteMemberThunk, getMemberDetailThunk, updateMemberThunk } from "../service/authThunk";
+import { useEffect, useState } from "react";
 import memberDataSlice from "../redux/memberDataSlice";
 import { logout } from "../redux/authSlice";
 
@@ -16,6 +16,27 @@ function DetailCon(){
 
     const {isLoggedIn} = useSelector(state => state.auth);
     const {member, loading, error} = useSelector(state => state.memberData);
+
+    const [editData, setEditData] = useState({password : "", role : ""})
+
+    useEffect(() => {
+        if (member) {
+            setEditData ({ password : member.password, role : member.role});
+        }
+    }, [member]);
+
+    const onChange = (e) => {
+        const {name, value} = e.target;
+        setEditData(prev => ({...prev, [name]:value}))
+    }
+
+    const onUpdate = async() => {
+        const result = await dispatch(updateMemberThunk( {id, ...editData}));
+        if (updateMemberThunk.fulfilled.match(result)) {
+            alert("수정되었습니다.");
+            navigate("/list");
+        }
+    }
 
     useEffect( () => {
         if(!isLoggedIn) {
@@ -47,7 +68,7 @@ function DetailCon(){
     
 
     return(<>
-    <DetailCom member={member} loading={loading} error={error} onBack={() => navigate(-1)} onDelete={onDelete} />
+    <DetailCom member={member} loading={loading} error={error} onBack={() => navigate(-1)} onDelete={onDelete} editData={editData} onChange={onChange} onUpdate={onUpdate} />
    </>)
 }
 

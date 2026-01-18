@@ -74,3 +74,19 @@ export const deleteMemberThunk = createAsyncThunk(
         }
     }
 );
+
+export const updateMemberThunk = createAsyncThunk(
+    "updateMemberThunk",
+    async(updateUser, {rejectWithValue}) => {
+        try{
+            const index = data_set.findIndex(user => user.id === updateUser.id)
+            if(index !== -1) {
+                data_set[index] = {...data_set[index], ...updateUser};
+                return data_set[index];
+            }
+            return rejectWithValue("유저를 찾을 수 없습니다.")
+        } catch (error){
+            return rejectWithValue("수정 중 오류가 발생하였습니다.")
+        }
+    }
+)

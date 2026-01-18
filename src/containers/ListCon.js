@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import ListCom from "../components/common/ListCom";
+import ListCom from "../components/ListCom"
 import { getAllMembersThunk } from "../service/authThunk";
 import { useEffect } from "react";
 
